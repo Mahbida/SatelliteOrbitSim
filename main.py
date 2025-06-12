@@ -7,7 +7,8 @@ SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Satellite Orbit Simulator"
 #Radius(Constant)
 EARTH_RADIUS = 100
-ORBIT_RADIUS = 150
+ELLIPSE_RADIUS_X = 180 #Major axis
+ELLIPSE_RADIUS_Y = 100 #Minor axis
 SATELLITE_RADIUS = 5
 
 class SatelliteSim(arcade.Window):
@@ -21,23 +22,35 @@ class SatelliteSim(arcade.Window):
 
         #Orbit angle in radians
         self.angle = 0.0
-        self.angular_velocity = 0.01 #Radians per frame
 
     def on_draw(self):
         self.clear()
         #Placeholder Earth
         arcade.draw_circle_filled(self.earth_x, self.earth_y,EARTH_RADIUS, arcade.color.DARK_GREEN)
         
-        #Compute satellite position based on angle
-        sat_x = self.earth_x + ORBIT_RADIUS * math.cos(self.angle)
-        sat_y = self.earth_y + ORBIT_RADIUS * math.sin(self.angle)
+        #Compute satellite position on an ellipse
+        sat_x = self.earth_x + ELLIPSE_RADIUS_X * math.cos(self.angle)
+        sat_y = self.earth_y + ELLIPSE_RADIUS_Y * math.sin(self.angle)
 
         #Placeholder Satellite
         arcade.draw_circle_filled(sat_x, sat_y, SATELLITE_RADIUS, arcade.color.LIGHT_GRAY)
 
     def on_update(self, delta_time):
-        #increment angle over time
-        self.angle += self.angular_velocity
+        #Variable based on distance
+        a = ELLIPSE_RADIUS_X
+        b = ELLIPSE_RADIUS_Y
+
+        #Compute satellite position
+        x = a * math.cos(self.angle)
+        y = b * math.sin(self.angle)
+
+        #Distance to center (Earth)
+        r = math.sqrt(x**2 + y**2)
+
+        #Speed is inversely proportional to distanse 
+        angular_velocity = 2 / r
+
+        self.angle += angular_velocity + delta_time
 
 #Main Exe
 def main():
