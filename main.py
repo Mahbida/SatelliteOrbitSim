@@ -8,7 +8,7 @@ SCREEN_TITLE = "Satellite Orbit Simulator"
 #Radius(Constant)
 EARTH_RADIUS = 100
 ELLIPSE_RADIUS_X = 180 #Major axis
-ELLIPSE_RADIUS_Y = 100 #Minor axis
+ELLIPSE_RADIUS_Y = 115 #Minor axis
 SATELLITE_RADIUS = 5
 
 class SatelliteSim(arcade.Window):
